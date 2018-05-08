@@ -46,5 +46,33 @@ function post(req, res) {
       res.status(500).json(err);
     });
 }
+// /api/bears/1234
+router.delete('/:id', (req, res) => {
+  const {id } = req.params;
+
+  Bear.findByIdAndRemove(id)
+  .then(bear => {
+    if (bear) {
+      res.status(204).end();
+    } else {
+      res.status(404).json({msg: 'Bear not found' });
+      }
+  })
+  .catch(err => res.status(500).json(err));
+});
   
+router.put('/:id', (req, res) => {
+  const { id } = req.params;
+
+  Bear.findByIdAndUpdate(id, update, options)
+  .then(bear => {
+    if (bear) {
+      res.status(200).json(bear);
+    } else {
+      res.status(404).json({msg: 'Bear not found' });
+      }
+  })
+  .catch(err => res.status(500).json(err));
+});
+
 module.exports = router;
